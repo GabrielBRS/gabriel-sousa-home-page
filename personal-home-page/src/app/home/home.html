@@ -1,0 +1,29 @@
+<nav class="navbar">
+  <div class="logo">GS.ENG</div>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#services">Serviços</a></li>
+    <li><a href="#contact">Contato</a></li>
+  </ul>
+</nav>
+
+<main class="content">
+  <section id="hero" class="hero-section">
+    <h1>{{ profileData().name }}</h1>
+    <p class="subtitle">{{ profileData().role }}</p>
+    <p class="location">{{ profileData().location }}</p>
+  </section>
+
+  <section id="services" class="services-grid">
+    @for (service of services(); track $index) {
+      <div class="card">
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.desc }}</p>
+      </div>
+    }
+  </section>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2025 Gabriel Sousa - High Performance Engineering</p>
+</footer>
