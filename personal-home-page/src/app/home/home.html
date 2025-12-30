@@ -1,29 +1,89 @@
 <nav class="navbar">
-  <div class="logo">GS.ENG</div>
-  <ul class="nav-links">
-    <li><a href="#about">Sobre</a></li>
-    <li><a href="#services">Serviços</a></li>
-    <li><a href="#contact">Contato</a></li>
-  </ul>
+  <div class="logo-container">
+    <span class="logo-text">GABRIEL SOUSA</span>
+    <span class="logo-sub">SYSTEMS ARCHITECT</span>
+  </div>
+  <div class="nav-menu">
+    <a href="#about">Trajetória</a>
+    <a href="#architecture">Filosofia de Design</a>
+    <a href="#stack">Ecossistema Técnico</a>
+    <a href="#aimis">Protocol A.I.M.I.S.</a>
+  </div>
 </nav>
 
-<main class="content">
-  <section id="hero" class="hero-section">
-    <h1>{{ profileData().name }}</h1>
-    <p class="subtitle">{{ profileData().role }}</p>
-    <p class="location">{{ profileData().location }}</p>
+<main class="main-frame">
+  <section id="hero" class="hero-full">
+    <div class="glitch-overlay"></div>
+    <div class="hero-content">
+      <h2 class="pre-title">High Performance Computing & Software Engineering</h2>
+      <h1>Onde a Robustez Enterprise encontra a <span class="highlight">Fronteira da IA.</span></h1>
+      <p class="hero-statement">
+        Arquiteto de Soluções Full-Cycle especializado em sistemas de missão crítica.
+        Do refinamento de tensores em <strong>C++/CUDA</strong> à orquestração de microserviços em
+        <strong>Java/Spring</strong> sobre <strong>Kubernetes</strong>. Minha missão é eliminar a dívida técnica
+        enquanto escalo a inteligência.
+      </p>
+      <div class="hero-metrics">
+        <div class="metric"><span>8+</span> Anos de Exp.</div>
+        <div class="metric"><span>HPC</span> Specialist</div>
+        <div class="metric"><span>SRE</span> Focused</div>
+      </div>
+    </div>
   </section>
 
-  <section id="services" class="services-grid">
-    @for (service of services(); track $index) {
-      <div class="card">
-        <h3>{{ service.title }}</h3>
-        <p>{{ service.desc }}</p>
+  <section id="architecture" class="arch-section">
+    <h2 class="section-label">01. Abordagem Híbrida</h2>
+    <div class="arch-grid">
+      <div class="arch-item">
+        <h3>AI Engineering & Model Serving</h3>
+        <p>Não apenas treino modelos; eu construo a infraestrutura de inferência. Especialista em <strong>NVIDIA Triton Inference Server</strong> e <strong>ONNX Runtime</strong>, transformando protótipos de Python em serviços de baixa latência prontos para produção.</p>
+        <ul class="tech-list">
+          <li>Kernels CUDA customizados</li>
+          <li>RAG Architecture</li>
+          <li>MARL (Reinforcement Learning)</li>
+        </ul>
       </div>
-    }
+
+      <div class="arch-item">
+        <h3>Platform Engineering (HPC)</h3>
+        <p>Desenho o "chão" onde a IA pisa. Orquestração nativa em <strong>Kubernetes & Rancher</strong>, garantindo escalabilidade horizontal e resiliência para cargas de trabalho de GPU-intensive.</p>
+        <ul class="tech-list">
+          <li>Cloud-Native (AWS/GCP)</li>
+          <li>Bare Metal Performance</li>
+          <li>CI/CD para Modelos</li>
+        </ul>
+      </div>
+
+      <div class="arch-item">
+        <h3>Enterprise Core Integrity</h3>
+        <p>A fundação em <strong>Java (Spring Boot/Quarkus)</strong> garante a segurança transacional. Experiência em modernizar sistemas legados (Oracle Forms/PL-SQL) para microserviços modernos sem interrupção de serviço.</p>
+        <ul class="tech-list">
+          <li>Arquitetura Event-Driven</li>
+          <li>Oracle DB & PostgreSQL</li>
+          <li>High Availability (HA)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="aimis" class="project-showcase">
+    <div class="project-inner">
+      <div class="project-info">
+        <h2 class="section-label">02. Research & Defense</h2>
+        <h2>Protocol A.I.M.I.S.</h2>
+        <p class="project-tagline">Automated Industrial & Military Integration System</p>
+        <p class="project-long-desc">
+          Um framework experimental focado na eliminação da "Névoa de Guerra" (Fog of War) através de
+          Multi-Agent Reinforcement Learning. O projeto demonstra a capacidade de integrar cadeias táticas
+          e logísticas sob pressão extrema, utilizando Realpolitik Computacional para otimização de recursos
+          just-in-time.
+        </p>
+        <div class="project-capabilities">
+          <span>Decision Theory</span>
+          <span>Computer Vision</span>
+          <span>Autonomous Logistics</span>
+        </div>
+      </div>
+    </div>
   </section>
 </main>
-
-<footer class="footer">
-  <p>&copy; 2025 Gabriel Sousa - High Performance Engineering</p>
-</footer>
