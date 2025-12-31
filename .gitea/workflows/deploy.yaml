@@ -10,12 +10,8 @@ jobs:
 
       - name: Build da Imagem
         run: |
-          # Buildando a imagem no Docker do servidor
+          # Apenas buildamos a imagem no Docker
           docker build -t gabrielsousa/home-page:latest .
-          
-          # PASSO CRUCIAL: Importa a imagem do Docker diretamente para o K3s (Containerd)
-          # Isso faz o Kubernetes "enxergar" a imagem sem precisar da internet
-          sudo k3s ctr images import <(docker save gabrielsousa/home-page:latest)
 
       - name: Instalar Kubectl
         uses: azure/setup-kubectl@v3
@@ -30,11 +26,11 @@ jobs:
 
       - name: Deploy no Rancher
         run: |
-          # 1. Aplica a nova imagem
+          # 1. Atualiza a imagem no deployment
           kubectl set image deployment/meu-site container-0=gabrielsousa/home-page:latest -n site-pessoal
           
-          # 2. Força a política para usar a imagem que acabamos de importar
+          # 2. Mudamos a política para 'Never' para forçar o uso da imagem local
           kubectl patch deployment meu-site -n site-pessoal -p '{"spec":{"template":{"spec":{"containers":[{"name":"container-0","imagePullPolicy":"Never"}]}}}}'
           
-          # 3. Aguarda o sucesso do rollout
-          kubectl rollout status deployment/meu-site -n site-pessoal --timeout=60s
+          # 3. Força o reinício do Pod para ler a imagem nova
+          kubectl rollout restart deployment/meu-site -n site-pessoal
