@@ -10,7 +10,13 @@ jobs:
 
       - name: Build da Imagem
         run: |
+          # Buildando e tagueando a imagem localmente
           docker build -t gabrielsousa/home-page:latest .
+
+      - name: Instalar Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
 
       - name: Configurar Contexto Kubernetes
         uses: azure/k8s-set-context@v3
