@@ -26,8 +26,11 @@ jobs:
 
       - name: Deploy no Rancher
         run: |
-          # Ajustado para o nome real do container: container-0
+          # 1. Atualiza a imagem no deployment
           kubectl set image deployment/meu-site container-0=gabrielsousa/home-page:latest -n site-pessoal
           
-          # Aguarda a atualização ser propagada no cluster K3s
-          kubectl rollout status deployment/meu-site -n site-pessoal
+          # 2. Força a política para NÃO buscar no Docker Hub se a imagem estiver local
+          kubectl patch deployment meu-site -n site-pessoal -p '{"spec":{"template":{"spec":{"containers":[{"name":"container-0","imagePullPolicy":"IfNotPresent"}]}}}}'
+          
+          # 3. Aguarda o status (com timeout menor para não travar o pipeline)
+          kubectl rollout status deployment/meu-site -n site-pessoal --timeout=60s
