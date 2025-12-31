@@ -10,7 +10,7 @@ jobs:
 
       - name: Build da Imagem
         run: |
-          # Buildando a imagem no servidor via Docker local do Runner
+          # Buildando a imagem localmente no servidor via Runner
           docker build -t gabrielsousa/home-page:latest .
 
       - name: Instalar Kubectl
@@ -26,9 +26,8 @@ jobs:
 
       - name: Deploy no Rancher
         run: |
-          # O comando segue o padrão: deployment/NOME_DEPLOY NOME_CONTAINER=NOVA_IMAGEM
-          # Pelos seus prints do Rancher, o container se chama "meu-site" (ou o padrão "container-0")
-               kubectl set image deployment/meu-site meu-site=gabrielsousa/home-page:latest -n site-pessoal
+          # Ajustado para o nome real do container: container-0
+          kubectl set image deployment/meu-site container-0=gabrielsousa/home-page:latest -n site-pessoal
           
-          # Garante que o K3s processe a atualização
-               kubectl rollout status deployment/meu-site -n site-pessoal
+          # Aguarda a atualização ser propagada no cluster K3s
+          kubectl rollout status deployment/meu-site -n site-pessoal
