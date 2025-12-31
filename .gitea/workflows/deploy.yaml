@@ -12,6 +12,13 @@ jobs:
         run: |
           docker build -t gabrielsousa/home-page:latest .
 
-      - name: Atualizar Kubernetes (K3s)
+      - name: Configurar Contexto Kubernetes
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Deploy no Rancher
         run: |
-          kubectl set image deployment/seu-deployment frontend=gabrielsousa/home-page:latest
+          kubectl set image deployment/meu-site meu-site=gabrielsousa/home-page:latest -n site-pessoal
+          kubectl rollout status deployment/meu-site -n site-pessoal
