@@ -10,7 +10,7 @@ jobs:
 
       - name: Build da Imagem
         run: |
-          # Buildando e tagueando a imagem localmente
+          # Buildando a imagem no servidor via Docker local do Runner
           docker build -t gabrielsousa/home-page:latest .
 
       - name: Instalar Kubectl
@@ -26,10 +26,8 @@ jobs:
 
       - name: Deploy no Rancher
         run: |
-        # Tentaremos atualizar o container pelo nome 'nginx', que é o padrão do Rancher
-          kubectl set image deployment/meu-site nginx=gabrielsousa/home-page:latest -n site-pessoal
-        
-        # Caso o nome acima falhe, o comando abaixo descobre o nome do container e aplica a imagem automaticamente:
-        # kubectl set image deployment/meu-site $(kubectl get deployment meu-site -n site-pessoal -o jsonpath='{.spec.template.spec.containers[0].name}')=gabrielsousa/home-page:latest -n site-pessoal
-        
+          # Agora usando o nome exato: deployment=meu-site | container=meu-site
+          kubectl set image deployment/meu-site meu-site=gabrielsousa/home-page:latest -n site-pessoal
+          
+          # Aguarda a atualização ser propagada nos Pods
           kubectl rollout status deployment/meu-site -n site-pessoal
