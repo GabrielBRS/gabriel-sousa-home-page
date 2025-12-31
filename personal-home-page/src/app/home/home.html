@@ -3,17 +3,26 @@
     <span class="logo-text">GABRIEL SOUSA</span>
     <span class="logo-sub">SYSTEMS ARCHITECT</span>
   </div>
-  <div class="nav-menu">
-    <a href="#architecture">{{ t().nav.phil }}</a>
-    <a href="#stack">{{ t().nav.stack }}</a>
-    <a href="#aimis">{{ t().nav.aimis }}</a>
-    <a href="#about">{{ t().nav.traj }}</a>
 
-    <button (click)="toggleLang()" class="lang-switcher">
-      {{ lang() === 'pt' ? 'EN' : 'PT' }}
-    </button>
-    <a href="https://github.com/GabrielBRS" target="_blank" class="social-link">GITHUB</a>
-    <a href="https://linkedin.com/in/gabriel-barros-rodrigues-de-sousa" target="_blank" class="social-link highlight-social">LINKEDIN</a>
+  <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="nav-menu" [class.open]="isMenuOpen()">
+    <a href="#architecture" (click)="isMenuOpen.set(false)">{{ t().nav.phil }}</a>
+    <a href="#stack" (click)="isMenuOpen.set(false)">{{ t().nav.stack }}</a>
+    <a href="#aimis" (click)="isMenuOpen.set(false)">{{ t().nav.aimis }}</a>
+    <a href="#about" (click)="isMenuOpen.set(false)">{{ t().nav.traj }}</a>
+
+    <div class="menu-footer-mobile">
+      <button (click)="toggleLang()" class="lang-switcher">
+        {{ lang() === 'pt' ? 'EN' : 'PT' }}
+      </button>
+      <a href="https://github.com/GabrielBRS" target="_blank" class="social-link">GITHUB</a>
+      <a href="https://linkedin.com/in/gabriel-barros-rodrigues-de-sousa" target="_blank" class="social-link highlight-social">LINKEDIN</a>
+    </div>
   </div>
 </nav>
 

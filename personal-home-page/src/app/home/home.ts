@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 })
 export class Home {
   public lang: any = signal('pt');
+  public isMenuOpen: any = signal(false);
+
+  public toggleMenu() { this.isMenuOpen.set(!this.isMenuOpen()); }
 
   private translations: any = {
     pt: {
