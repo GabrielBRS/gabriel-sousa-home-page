@@ -1,0 +1,17 @@
+name: Deploy Portfolio
+on: [push]
+
+jobs:
+  automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v3
+
+      - name: Build da Imagem
+        run: |
+          docker build -t gabrielsousa/home-page:latest .
+
+      - name: Atualizar Kubernetes (K3s)
+        run: |
+          kubectl set image deployment/seu-deployment frontend=gabrielsousa/home-page:latest
