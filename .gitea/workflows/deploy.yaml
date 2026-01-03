@@ -27,10 +27,10 @@ jobs:
       - name: Deploy no Rancher
         run: |
           # 1. Atualiza a imagem no deployment
-          kubectl set image deployment/meu-site container-0=gabrielsousa/home-page:latest -n site-pessoal
+          kubectl set image deployment/home-page home-page=gabrielsousa/home-page:latest -n home-page
           
           # 2. Mudamos a política para 'Never' para forçar o uso da imagem local
-          kubectl patch deployment meu-site -n site-pessoal -p '{"spec":{"template":{"spec":{"containers":[{"name":"container-0","imagePullPolicy":"Never"}]}}}}'
+          kubectl patch deployment home-page -n home-page -p '{"spec":{"template":{"spec":{"containers":[{"name":"home-page","imagePullPolicy":"Never"}]}}}}'
           
           # 3. Força o reinício do Pod para ler a imagem nova
-          kubectl rollout restart deployment/meu-site -n site-pessoal
+          kubectl rollout restart deployment/home-page -n home-page
