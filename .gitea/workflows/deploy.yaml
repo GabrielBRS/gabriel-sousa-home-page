@@ -1,5 +1,7 @@
 name: Deploy Portfolio
-on: [push]
+on:
+  push:
+    branches: [ main ] # Evite deploy em qualquer push de branch
 
 jobs:
   automation:
@@ -8,15 +10,17 @@ jobs:
       - name: Checkout Código
         uses: actions/checkout@v3
 
-      - name: Build da Imagem
-        run: |
-          # Apenas buildamos a imagem no Docker
-          docker build -t gabrielsousa/home-page:latest .
-
-      - name: Instalar Kubectl
-        uses: azure/setup-kubectl@v3
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
         with:
-          version: 'latest'
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push
+        run: |
+          # Usamos o hash do commit para versionar, evitando o cache problemático do 'latest'
+          docker build -t gabrielsousa/home-page:${{ github.sha }} .
+          docker push gabrielsousa/home-page:${{ github.sha }}
 
       - name: Configurar Contexto Kubernetes
         uses: azure/k8s-set-context@v3
@@ -24,13 +28,11 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Deploy no Rancher
+      - name: Deploy no Rancher (K3s)
         run: |
-          # 1. Atualiza a imagem no deployment
-          kubectl set image deployment/home-page home-page=gabrielsousa/home-page:latest -n home-page
+          # Atualiza para a imagem específica do commit. 
+          # O Kubernetes detectará a mudança de tag e fará o rollout automaticamente.
+          kubectl set image deployment/home-page home-page=gabrielsousa/home-page:${{ github.sha }} -n home-page
           
-          # 2. Mudamos a política para 'Never' para forçar o uso da imagem local
-          kubectl patch deployment home-page -n home-page -p '{"spec":{"template":{"spec":{"containers":[{"name":"home-page","imagePullPolicy":"Never"}]}}}}'
-          
-          # 3. Força o reinício do Pod para ler a imagem nova
-          kubectl rollout restart deployment/home-page -n home-page
+          # Verifica se o deploy foi bem sucedido
+          kubectl rollout status deployment/home-page -n home-page
