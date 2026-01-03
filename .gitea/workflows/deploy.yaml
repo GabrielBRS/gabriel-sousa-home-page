@@ -1,7 +1,5 @@
-name: Deploy Portfolio
-on:
-  push:
-    branches: [ main ] # Evite deploy em qualquer push de branch
+name: Deploy Portfolio Interno
+on: [push]
 
 jobs:
   automation:
@@ -10,17 +8,17 @@ jobs:
       - name: Checkout Código
         uses: actions/checkout@v3
 
-      - name: Login no Docker Hub
+      - name: Login no Gitea Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: gitea.gabrielbrsousa.dev
+          username: ${{ gitea.repository_owner }}
+          password: ${{ secrets.GITEA_TOKEN }}
 
       - name: Build and Push
         run: |
-          # Usamos o hash do commit para versionar, evitando o cache problemático do 'latest'
-          docker build -t gabrielsousa/home-page:${{ github.sha }} .
-          docker push gabrielsousa/home-page:${{ github.sha }}
+          docker build -t gitea.gabrielbrsousa.dev/gabrielsousa/home-page:${{ github.sha }} .
+          docker push gitea.gabrielbrsousa.dev/gabrielsousa/home-page:${{ github.sha }}
 
       - name: Configurar Contexto Kubernetes
         uses: azure/k8s-set-context@v3
@@ -30,9 +28,8 @@ jobs:
 
       - name: Deploy no Rancher (K3s)
         run: |
-          # Atualiza para a imagem específica do commit. 
-          # O Kubernetes detectará a mudança de tag e fará o rollout automaticamente.
-          kubectl set image deployment/home-page home-page=gabrielsousa/home-page:${{ github.sha }} -n home-page
+          # O comando set image diz ao Kubernetes para usar a nova tag
+          kubectl set image deployment/home-page home-page=gitea.gabrielbrsousa.dev/gabrielsousa/home-page:${{ github.sha }} -n home-page
           
-          # Verifica se o deploy foi bem sucedido
+          # Dica extra: Verifique o status do rollout
           kubectl rollout status deployment/home-page -n home-page
