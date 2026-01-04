@@ -8,11 +8,24 @@ jobs:
       - name: Checkout Código
         uses: actions/checkout@v3
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build Angular
+        run: |
+          npm install
+          # Isso gera a pasta 'dist/'
+          npm run build -- --configuration=production
+
       - name: Deploy via SSH (Rsync)
         uses: Burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avzr --delete -O --no-perms --exclude='.git*'
-          path: personal-home-page/
+          switches: -avzr --delete -O --no-perms
+          # IMPORTANTE: Aponte para a pasta de saída do build do Angular
+          # Verifique se o caminho correto é dist/<nome-do-projeto>/
+          path: dist/site-pessoal/browser/
           remote_path: /home/gabrielsousa/home-page-data/
           remote_host: 192.168.15.200
           remote_user: gabrielsousa
