@@ -90,14 +90,6 @@ export class Home {
         feature2: 'Just-in-Time for Defense Logistics Optimization',
         feature3: 'Computer Vision & Telemetry'
       },
-      traj: {
-        label: '04. Impact Trajectory',
-        bip: 'Senior Tech Consultant. European-scale projects and high-complexity systems.',
-        qintess: 'TJBA Modernization. Strategic migration from Oracle Forms to Java 17/Angular on K8s/Rancher.',
-        valloo: 'Fintech. 40% latency reduction in risk analysis and 90% automation of AWS processes.',
-        pizza: 'Cloud Architect. Full AWS migration and 70% reduction in inventory loss via AI.',
-        brb: 'Full Stack at Banco BRB. Critical SQL Server query optimization and secure APIs.'
-      },
       footer: {
         location: 'Brasília, Brazil - Global Reach (Milan | Remote)',
         legal: 'Developed with Angular (Zoneless & SSR) by Gabriel Sousa.'
