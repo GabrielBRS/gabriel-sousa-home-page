@@ -3,17 +3,17 @@ on: [push]
 
 jobs:
   automation:
-    runs-on: ubuntu-latest # O runner 'servidor-ubuntu-dell' cuidará disso
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Código
         uses: actions/checkout@v3
 
       - name: Deploy via SSH (Rsync)
-        uses: https://github.com/AkihiroSuda/rsync-action@v1
+        uses: Burnett01/rsync-deployments@5.2.1
         with:
-          host: 192.168.15.200
-          user: gabrielsousa
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          src: "./*"
-          dest: "/home/gabrielsousa/home-page-data/"
-          args: "-azP --delete --exclude '.git*' --exclude '.gitea*'"
+          switches: -avzr --delete
+          path: .
+          remote_path: /home/gabrielsousa/home-page-data/
+          remote_host: 192.168.15.200
+          remote_user: gabrielsousa
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
