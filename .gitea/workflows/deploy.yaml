@@ -11,9 +11,9 @@ jobs:
       - name: Deploy via SSH (Rsync)
         uses: Burnett01/rsync-deployments@5.2.1
         with:
-            switches: -avzr --delete -O --no-perms --exclude='.git*' --exclude='.idea'
-            path: personal-home-page/
-            remote_path: /home/gabrielsousa/home-page-data/
-            remote_host: 192.168.15.200
-            remote_user: gabrielsousa
-            remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          switches: -avzr --delete -O --no-perms --exclude='.git*' --exclude='.idea'
+          path: personal-home-page/
+          remote_path: /home/gabrielsousa/home-page-data/
+          remote_host: 192.168.15.200
+          remote_user: gabrielsousa
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
