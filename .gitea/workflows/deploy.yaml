@@ -11,7 +11,8 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          # Atualizado para v22 para suportar Angular v20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: personal-home-page/package-lock.json
 
@@ -19,16 +20,18 @@ jobs:
         working-directory: personal-home-page
         run: |
           npm install
+          # Executa o build de produção conforme o script no seu package.json
           npm run build -- --configuration=production
 
       - name: Fix para Rotas Angular
-        # Este passo garante que o Nginx não dê erro 404 em rotas internas do Angular
+        # Garante que o index.html seja servido em caso de 404 (padrão SPA)
         run: cp personal-home-page/dist/personal-home-page/browser/index.html personal-home-page/dist/personal-home-page/browser/404.html
 
       - name: Deploy via SSH (Rsync)
         uses: Burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete -O --no-perms
+          # Caminho ajustado conforme a saída do build-application do Angular
           path: personal-home-page/dist/personal-home-page/browser/
           remote_path: /home/gabrielsousa/home-page-data/
           remote_host: 192.168.15.200
