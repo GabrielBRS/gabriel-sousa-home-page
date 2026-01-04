@@ -12,20 +12,24 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'
+          cache-dependency-path: personal-home-page/package-lock.json
 
       - name: Build Angular
+        working-directory: personal-home-page
         run: |
           npm install
-          # Isso gera a pasta 'dist/'
           npm run build -- --configuration=production
+
+      - name: Fix para Rotas Angular
+        # Este passo garante que o Nginx não dê erro 404 em rotas internas do Angular
+        run: cp personal-home-page/dist/personal-home-page/browser/index.html personal-home-page/dist/personal-home-page/browser/404.html
 
       - name: Deploy via SSH (Rsync)
         uses: Burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete -O --no-perms
-          # IMPORTANTE: Aponte para a pasta de saída do build do Angular
-          # Verifique se o caminho correto é dist/<nome-do-projeto>/
-          path: dist/site-pessoal/browser/
+          path: personal-home-page/dist/personal-home-page/browser/
           remote_path: /home/gabrielsousa/home-page-data/
           remote_host: 192.168.15.200
           remote_user: gabrielsousa
